@@ -10,3 +10,6 @@ phases:
 artifacts:
   files:
     - target/native-lambda-native.zip
+cache:
+  paths:
+    - '/root/.m2/**/*'
