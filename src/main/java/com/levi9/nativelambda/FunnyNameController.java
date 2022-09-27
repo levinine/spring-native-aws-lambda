@@ -24,12 +24,15 @@ public class FunnyNameController {
 
     @GetMapping(value = "/{id}", produces = {"application/json"})
     public FunnyNameEntity getById(@PathVariable String id) {
+        System.out.println("getById");
         return repository.getName(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "Not found"));
     }
 
     @PostMapping(value = "/", consumes = {"application/json"}, produces = {"application/json"})
     public void generateFunnyName(@RequestBody FunnyNameDto dto) {
+        System.out.println("generateFunnyName");
+
         repository.saveName(
                 FunnyNameEntity.builder()
                         .name(namePrefixes.get(randomizer.nextInt(namePrefixes.size())) + " " + dto.getName())
