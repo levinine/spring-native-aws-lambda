@@ -6,6 +6,8 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.StaticTableSchema;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -15,8 +17,14 @@ import static software.amazon.awssdk.enhanced.dynamodb.mapper.StaticAttributeTag
 @Repository
 public class NameRepository {
 
-    DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.create();
+    private static final Region region = Region.EU_CENTRAL_1;
+    private static final DynamoDbClient ddb = DynamoDbClient.builder()
+            .region(region)
+            .build();
 
+    private static final DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+            .dynamoDbClient(ddb)
+            .build();
 
     private final TableSchema<FunnyNameEntity> tableSchema =
             StaticTableSchema.builder(FunnyNameEntity.class)
