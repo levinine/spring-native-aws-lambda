@@ -53,11 +53,6 @@
 			<version>3.2.7</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-function-adapter-aws</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.24</version>
@@ -67,7 +62,6 @@
 			<artifactId>spring-data-dynamodb</artifactId>
 			<version>5.1.0</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>javax.persistence-api</artifactId>
@@ -175,7 +169,10 @@
 							</execution>
 						</executions>
 						<configuration>
-							<buildArgs>--enable-url-protocols=http</buildArgs>
+							<buildArgs>
+								<arg>-H:IncludeResources=com/amazonaws/partitions/endpoints.json</arg>
+								<buildArg>--enable-url-protocols=http</buildArg>
+							</buildArgs>
 						</configuration>
 
 					</plugin>
