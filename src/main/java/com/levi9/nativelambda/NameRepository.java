@@ -10,7 +10,10 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.StaticTableSchema;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
+import java.time.Instant;
 import java.util.Optional;
+
+import static software.amazon.awssdk.enhanced.dynamodb.mapper.StaticAttributeTags.primaryPartitionKey;
 
 @Repository
 public class NameRepository {
@@ -27,12 +30,20 @@ public class NameRepository {
             .build();
 
 
-    private TableSchema<FunnyNameEntity> tableSchema =
+    private final TableSchema<FunnyNameEntity> tableSchema =
             StaticTableSchema.builder(FunnyNameEntity.class)
                     .newItemSupplier(FunnyNameEntity::new)
                     .addAttribute(String.class, a -> a.name("id")
                             .getter(FunnyNameEntity::getId)
-                            .setter(FunnyNameEntity::setId))
+                            .setter(FunnyNameEntity::setId)
+                            .tags(primaryPartitionKey()))
+                    .addAttribute(String.class, a -> a.name("name")
+                            .getter(FunnyNameEntity::getName)
+                            .setter(FunnyNameEntity::setName))
+                    .addAttribute(Instant.class, a -> a.name("generatedAt")
+                            .getter(FunnyNameEntity::getGeneratedAt)
+                            .setter(FunnyNameEntity::setGeneratedAt))
+
                     .build();
     private final DynamoDbTable<FunnyNameEntity> NAME_TABLE = enhancedClient.table("name", tableSchema);
 
