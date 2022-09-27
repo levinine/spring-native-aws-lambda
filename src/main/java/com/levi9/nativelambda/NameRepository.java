@@ -41,7 +41,7 @@ public class NameRepository {
                             .setter(FunnyNameEntity::setGeneratedAt))
 
                     .build();
-    private final DynamoDbTable<FunnyNameEntity> NAME_TABLE = enhancedClient.table("name", tableSchema);
+    private final DynamoDbTable<FunnyNameEntity> NAME_TABLE = enhancedClient.table("names", tableSchema);
 
     public void saveName(FunnyNameEntity name) {
         NAME_TABLE.putItem(name);
