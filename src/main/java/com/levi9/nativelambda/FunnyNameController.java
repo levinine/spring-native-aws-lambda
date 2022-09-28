@@ -3,9 +3,10 @@ package com.levi9.nativelambda;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -21,13 +22,6 @@ public class FunnyNameController {
     Random randomizer = new Random();
     @Autowired
     NameRepository repository;
-
-    @GetMapping(value = "/{id}", produces = {"application/json"})
-    public FunnyNameEntity getById(@PathVariable String id) {
-        System.out.println("getById");
-        return repository.getName(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Not found"));
-    }
 
     @PostMapping(value = "/", consumes = {"application/json"}, produces = {"application/json"})
     public void generateFunnyName(@RequestBody FunnyNameDto dto) {
