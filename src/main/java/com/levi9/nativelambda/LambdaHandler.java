@@ -13,23 +13,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class LambdaHandler implements RequestStreamHandler {
-    private SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
+    private static SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
+
+    static {
+        try {
+            handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(NativeLambdaApplication.class);
+        } catch (ContainerInitializationException e) {
+            // if we fail here. We re-throw the exception to force another cold start
+            e.printStackTrace();
+            throw new RuntimeException("Could not initialize Spring Boot application", e);
+        }
+    }
     private static ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
             throws IOException {
         System.out.println("Request recieved");
-        if (handler == null) {
-            try {
-                handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(NativeLambdaApplication.class);
-
-            } catch (ContainerInitializationException e) {
-                e.printStackTrace();
-                outputStream.close();
-                return;
-            }
-        }
 
         AwsProxyRequest request = mapper.readValue(inputStream, AwsProxyRequest.class);
         System.out.println(request.getPath());
