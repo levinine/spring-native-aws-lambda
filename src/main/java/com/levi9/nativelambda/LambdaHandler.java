@@ -8,7 +8,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.ws.rs.core.Application;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,7 +21,7 @@ public class LambdaHandler implements RequestStreamHandler {
             throws IOException {
         if (handler == null) {
             try {
-                handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(Application.class);
+                handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(NativeLambdaApplication.class);
 
             } catch (ContainerInitializationException e) {
                 e.printStackTrace();
