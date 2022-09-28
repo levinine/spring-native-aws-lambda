@@ -19,6 +19,7 @@ public class LambdaHandler implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
             throws IOException {
+        System.out.println("Request recieved");
         if (handler == null) {
             try {
                 handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(NativeLambdaApplication.class);
@@ -31,6 +32,9 @@ public class LambdaHandler implements RequestStreamHandler {
         }
 
         AwsProxyRequest request = mapper.readValue(inputStream, AwsProxyRequest.class);
+        System.out.println(request.getPath());
+        System.out.println(request.getBody());
+        System.out.println(request.getResource());
 
         AwsProxyResponse resp = handler.proxy(request, context);
         mapper.writeValue(outputStream, resp);
