@@ -1,27 +1,41 @@
 package com.levi9.nativelambda;
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
-import com.amazonaws.serverless.proxy.spring.SpringLambdaContainerHandler;
+import com.amazonaws.serverless.proxy.spring.SpringBootLambdaContainerHandler;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class LambdaHandler implements RequestHandler<HttpApiV2ProxyRequest, AwsProxyResponse> {
-    private static SpringLambdaContainerHandler<HttpApiV2ProxyRequest, AwsProxyResponse> handler;
+import javax.ws.rs.core.Application;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-    static {
-        try {
-            handler = SpringLambdaContainerHandler.getHttpApiV2ProxyHandler(NativeLambdaApplication.class);
-        } catch (ContainerInitializationException e) {
-            // if we fail here. We re-throw the exception to force another cold start
-            e.printStackTrace();
-            throw new RuntimeException("Could not initialize Spring Boot application", e);
-        }
-    }
+public class LambdaHandler implements RequestStreamHandler {
+    private SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
+    private static ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public AwsProxyResponse handleRequest(HttpApiV2ProxyRequest awsProxyRequest, Context context) {
-        return handler.proxy(awsProxyRequest, context);
+    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
+            throws IOException {
+        if (handler == null) {
+            try {
+                handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(Application.class);
+
+            } catch (ContainerInitializationException e) {
+                e.printStackTrace();
+                outputStream.close();
+                return;
+            }
+        }
+
+        AwsProxyRequest request = mapper.readValue(inputStream, AwsProxyRequest.class);
+
+        AwsProxyResponse resp = handler.proxy(request, context);
+        mapper.writeValue(outputStream, resp);
+        // just in case it wasn't closed by the mapper
+        outputStream.close();
     }
 }
