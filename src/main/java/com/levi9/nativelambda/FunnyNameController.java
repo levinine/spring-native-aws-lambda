@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.Random;
 @RestController
 @RequiredArgsConstructor
 @ResponseBody
+@EnableWebMvc
 public class FunnyNameController {
 
     final static List<String> namePrefixes = Arrays.asList("Huckleberry", "Sizzle Pants", "Itsy Bitsy", "Speedy", "Mighty", "Legendary", "Jumpy");
