@@ -9,7 +9,6 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.Application;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,7 +27,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
                     .springBootApplication(Application.class)
                     .buildAndInitialize();*/
 
-            handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(Application.class);
+            handler = SpringBootLambdaContainerHandler.getAwsProxyHandler(NativeLambdaApplication.class);
 
             logger.info("created handler");
 
