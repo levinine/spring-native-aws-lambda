@@ -25,12 +25,10 @@ public class FunnyNameFunctionImplementor {
     private static Logger logger = LoggerFactory.getLogger(FunnyNameFunctionImplementor.class);
 
 
-
     @Bean
     public Function<FunnyNameRequestDto, FunnyNameEntity> getFunnyNameById() {
         logger.info("getFunnyNameById");
         return request -> repository.getName(request.getId()).orElseThrow();
-//        return id -> repository.getName(id).orElseThrow(() -> new Exception("Not found"));
     }
 
     @Bean
