@@ -27,14 +27,16 @@ public class FunnyNameFunctionImplementor {
 
     @Bean
     public Function<FunnyNameRequestDto, FunnyNameEntity> getFunnyNameById() {
-        logger.info("getFunnyNameById");
-        return request -> repository.getName(request.getId()).orElseThrow();
+        return request -> {
+            logger.info("getFunnyNameById");
+            return repository.getName(request.getId()).orElseThrow();
+        };
     }
 
     @Bean
     public Function<GenerateFunnyNameDto, String> generateFunnyName() {
-        logger.info("generateFunnyName");
         return dto -> {
+            logger.info("generateFunnyName executed");
             repository.saveName(
                     FunnyNameEntity.builder()
                             .id(UUID.randomUUID().toString())
