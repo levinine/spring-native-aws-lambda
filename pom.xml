@@ -46,18 +46,18 @@
 			<artifactId>spring-native</artifactId>
 			<version>${spring-native.version}</version>
 		</dependency>
-			<!-- Uncoomment for local -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-web</artifactId>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>org.springframework.boot</groupId>-->
-<!--					<artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
-			<!-- Uncoomment for local -->
+			<!-- Comment for local -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+			<!-- Comment for local -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -127,7 +127,13 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-
+						<configuration>
+							<artifactSet>
+								<excludes>
+									<exclude>org.apache.tomcat.embed:*</exclude>
+								</excludes>
+							</artifactSet>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
