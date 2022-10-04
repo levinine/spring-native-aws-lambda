@@ -19,6 +19,7 @@
 		<spring-cloud-function.version>3.2.7</spring-cloud-function.version>
 		<spring-native.version>0.12.1</spring-native.version>
 		<aws-lambda-events.version>3.9.0</aws-lambda-events.version>
+		<wrapper.version>1.0.27.RELEASE</wrapper.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -96,6 +97,24 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.boot.experimental</groupId>
+						<artifactId>spring-boot-thin-layout</artifactId>
+						<version>${wrapper.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
