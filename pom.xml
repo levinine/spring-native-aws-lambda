@@ -162,18 +162,6 @@
 			<build>
 				<finalName>native-lambda</finalName>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<version>3.1.1</version>
-						<configuration>
-							<archive>
-								<manifest>
-									<mainClass>com.amazonaws.services.lambda.runtime.api.client.AWSLambda</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-					</plugin>
 					<!-- Builds the native image -->
 					<plugin>
 						<groupId>org.graalvm.buildtools</groupId>
