@@ -8,6 +8,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FunnyNameDto implements Serializable {
+public class GenerateFunnyNameDto implements Serializable {
     String name;
 }

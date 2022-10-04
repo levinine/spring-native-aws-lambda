@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.nativex.hint.SerializationHint;
 
 @SpringBootApplication
-@SerializationHint(types = {FunnyNameDto.class,})
+@SerializationHint(types = {GenerateFunnyNameDto.class,})
 @Import(FunnyNameFunctionImplementor.class)
 public class NativeLambdaApplication {
 
