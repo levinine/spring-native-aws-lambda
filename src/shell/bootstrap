@@ -2,4 +2,4 @@
 
 cd ${LAMBDA_TASK_ROOT:-.}
 
-./native-lambda "com.levi9.nativelambda.StreamLambdaHandler::handleRequest"
+./native-lambda
