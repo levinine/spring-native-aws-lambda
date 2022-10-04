@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.time.Instant;
 
 @Data
@@ -18,8 +15,6 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FunnyNameEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     String id;
     String name;
     Instant generatedAt;

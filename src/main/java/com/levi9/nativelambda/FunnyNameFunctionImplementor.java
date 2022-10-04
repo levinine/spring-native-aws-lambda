@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Configuration
@@ -39,6 +39,7 @@ public class FunnyNameFunctionImplementor {
         return dto -> {
             repository.saveName(
                     FunnyNameEntity.builder()
+                            .id(UUID.randomUUID().toString())
                             .name(namePrefixes.get(randomizer.nextInt(namePrefixes.size())) + " " + dto.getName())
                             .generatedAt(Instant.now())
                             .build()
