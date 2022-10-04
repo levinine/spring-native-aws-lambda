@@ -28,7 +28,7 @@ public class FunnyNameFunctionImplementor {
 
     @Bean
     public Function<String, FunnyNameEntity> getFunnyNameById() {
-        logger.info("generateFunnyName");
+        logger.info("getFunnyNameById");
         return id -> repository.getName(id).orElseThrow();
 //        return id -> repository.getName(id).orElseThrow(() -> new Exception("Not found"));
     }
