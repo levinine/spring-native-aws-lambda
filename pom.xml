@@ -16,14 +16,25 @@
 	<properties>
 		<java.version>11</java.version>
 		<repackage.classifier/>
-		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<spring-cloud-function.version>3.2.7</spring-cloud-function.version>
 		<spring-native.version>0.12.1</spring-native.version>
+		<aws-lambda-events.version>3.9.0</aws-lambda-events.version>
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-function-adapter-aws</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-lambda-java-runtime-interface-client</artifactId>
-			<version>2.1.1</version>
+			<artifactId>aws-lambda-java-events</artifactId>
+			<version>${aws-lambda-events.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-core</artifactId>
+			<version>1.1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.graalvm.nativeimage</groupId>
@@ -41,36 +52,28 @@
 			<artifactId>spring-native</artifactId>
 			<version>${spring-native.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<!-- Comment for local -->
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
-			<!-- Comment for local -->
-		</dependency>
+			<!-- Uncoomment for local -->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-web</artifactId>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<groupId>org.springframework.boot</groupId>-->
+<!--					<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
+			<!-- Uncoomment for local -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.18.24</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/software.amazon.awssdk/dynamodb-enhanced -->
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>dynamodb-enhanced</artifactId>
 			<version>2.17.281</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-core -->
-		<dependency>
-			<groupId>com.amazonaws.serverless</groupId>
-			<artifactId>aws-serverless-java-container-springboot2</artifactId>
-			<version>1.9</version>
-		</dependency>
-
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>javax.persistence-api</artifactId>
@@ -83,12 +86,11 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
+				<artifactId>spring-cloud-function-dependencies</artifactId>
+				<version>${spring-cloud-function.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -99,6 +101,8 @@
 				<artifactId>maven-shade-plugin</artifactId>
 				<configuration>
 					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<shadedArtifactAttached>true</shadedArtifactAttached>
+					<shadedClassifierName>aws</shadedClassifierName>
 				</configuration>
 				<executions>
 					<execution>
@@ -106,13 +110,7 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-						<configuration>
-							<artifactSet>
-								<excludes>
-									<exclude>org.apache.tomcat.embed:*</exclude>
-								</excludes>
-							</artifactSet>
-						</configuration>
+
 					</execution>
 				</executions>
 			</plugin>
