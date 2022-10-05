@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Import;
+import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.SerializationHint;
 
 @SpringBootApplication
+@NativeHint
 @SerializationHint(types = {GenerateFunnyNameDto.class, FunnyNameRequestDto.class})
 @Import(FunnyNameFunctionImplementor.class)
 public class NativeLambdaApplication {
