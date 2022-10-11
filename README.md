@@ -1,4 +1,4 @@
-What is Spring Native?
+### What is Spring Native?
 
 Spring Native provides **beta** support for compiling Spring Boot
 applications to native executables with GraalVM, providing a
