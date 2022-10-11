@@ -90,5 +90,5 @@ Preconditions:
 ### Cons:
 - Spring cloud function documentation is not always up to date. It seems the Cloud function is not fully supported by Spring native
 - There is no cross-platform compiling possibility
-- Build is quite long
+- Build takes quite long
 - Inability to integrate this example with the API Gateway. The payload of the request is stored in the 'body' section of the request sent to the lambda from Gateway. Usage of APIGatewayV2HTTPEvent and APIGatewayProxyRequestEvent did not do the trick. 
