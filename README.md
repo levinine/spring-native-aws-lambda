@@ -1,3 +1,13 @@
+What is Spring Native?
+
+Spring Native provides **beta** support for compiling Spring Boot
+applications to native executables with GraalVM, providing a
+new way to deploy Spring Boot applications that then run
+extremely efficiently.
+
+JVM shines in terms of short build time, maturity and performance.
+Native is optimized for low memory footprint and low startup time.
+
 ### AWS Lambda using Spring Cloud function built by Spring native 
 This mini project contains:
 - A Spring boot project consisting of two Spring Cloud functions.
@@ -7,7 +17,7 @@ This mini project contains:
 
 
 ### How to build the  project
-**Make sure you have at least 6GB+ memory for Docker to use for the build process.**
+**Make sure you have at least 6 GB+ memory for Docker to use for the build process.**
 **Make sure you have GraalVM 22.2.0 or latter installed.**
 
 To build the project, execute:
@@ -59,3 +69,26 @@ Preconditions:
   - under the "headers", change "spring.cloud.function.definition" : "getFunnyNameById"
 
 
+### Observations & comments
+- Cold start times of this project on 256MB lambda is < 1 sec. This on is NodeJS level.
+- Startup time on M1 with 32 GB ram is around 50 ms
+- Memory footprint is < 150 MB
+- Size of the zipped native image of this project is 23.5 MB. Image size can be reduced by 30% by performing UPX compression.
+- Building the native image with GraalVM takes quite some time and requires loads of resources. On a M1 with 32 GB RAM, the build takes longer than 1 minute.
+- GraalVM needs to be aware reflection, resources and proxies which is configured at build time through reflect-config.json. Spring Native is generating this automatically for the libraries it supports. For the unsupported ones, this will have to be configured manually by you.
+  - This configuration can also be provided by Native hint Annotations as well (@NativeHint, @SeriallizationHint, etc)
+- Images can be built through
+  - Buildpacks (Paketo). It runs a Docker container with all dependencies inside which the native image is built. x86 is supported, ARM is in progress, see https://github.com/buildpacks/lifecycle/issues/435 for updates.
+    - UPX compression can be used which reduces the size of the image by the factor of 4. This can improve the startup time due to lower resources used.
+  - By using Native build tools installed locally (as this example shows). This produces a native executable compatible with the source OS. Cross-platform compilation is not (yet) possible.
+- It supports Java and Kotlin (>1.5)
+- Native testing is supported - Junit5 tests can be compiled as a native executable and executed on native. Mockito is not supported yet.
+- Runtime created proxies (for example@Transactional or @PreAuthorize) are recognized by Spring Native out of the box which modifies the bytecode on build time in order to create the proxies which can be used on the runtime
+  - If Spring does not recognize such a proxy, @AotProxyHint can be used
+
+
+### Cons:
+- Spring cloud function documentation is not always up to date. It seems the Cloud function is not fully supported by Spring native
+- There is no cross-platform compiling possibility
+- Build is quite long
+- Inability to integrate this example with the API Gateway. The payload of the request is stored in the 'body' section of the request sent to the lambda from Gateway. Usage of APIGatewayV2HTTPEvent and APIGatewayProxyRequestEvent did not do the trick. 
