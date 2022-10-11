@@ -70,7 +70,7 @@ Preconditions:
 
 
 ### Observations & comments
-- Cold start execution time of a Lambda with 256 MBw RAM with this project deployed is < 1 sec. This on is NodeJS level.
+- Cold start execution time of a Lambda with 256 MBw RAM with this project deployed is < 1 sec total (Billed duration). This on is NodeJS level.
 - Startup time on M1 with 32 GB ram is around 50 ms
 - Memory footprint is < 150 MB
 - Size of the zipped native image of this project is 23.5 MB. Image size can be reduced by 30% by performing UPX compression.
