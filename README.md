@@ -70,7 +70,7 @@ Preconditions:
 
 
 ### Observations & comments
-- Cold start times of this project on 256MB lambda is < 1 sec. This on is NodeJS level.
+- Cold start execution time of a Lambda with 256 MBw RAM with this project deployed is < 1 sec. This on is NodeJS level.
 - Startup time on M1 with 32 GB ram is around 50 ms
 - Memory footprint is < 150 MB
 - Size of the zipped native image of this project is 23.5 MB. Image size can be reduced by 30% by performing UPX compression.
@@ -88,7 +88,8 @@ Preconditions:
 
 
 ### Cons:
-- Spring cloud function documentation is not always up to date. It seems the Cloud function is not fully supported by Spring native
-- There is no cross-platform compiling possibility
+- Spring cloud function documentation and examples are not always up to date. It seems the Cloud function is not fully supported by Spring native
 - Build takes quite long
-- Inability to integrate this example with the API Gateway. The payload of the request is stored in the 'body' section of the request sent to the lambda from Gateway. Usage of APIGatewayV2HTTPEvent and APIGatewayProxyRequestEvent did not do the trick. 
+- There is no cross-platform compiling possibility
+- Inability to integrate this example with the API Gateway. The payload of the request is stored in the 'body' section of the request sent to the lambda from Gateway and is somehow inaccessible to the Functions. It seems there is a bug in Spring cloud Functions when running on native. Usage of APIGatewayV2HTTPEvent and APIGatewayProxyRequestEvent did not do the trick.
+- Inability to properly debug a native app
