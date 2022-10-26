@@ -2,15 +2,15 @@ package com.levi9.nativelambda;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Import;
-import org.springframework.nativex.hint.NativeHint;
-import org.springframework.nativex.hint.SerializationHint;
+import org.springframework.context.annotation.ImportRuntimeHints;
 
 @SpringBootApplication
-@NativeHint
-@SerializationHint(types = {GenerateFunnyNameDto.class, FunnyNameRequestDto.class})
+@ImportRuntimeHints(NativeLambdaApplication.NativeRuntimeHints.class)
 @Import(FunnyNameFunctionImplementor.class)
 public class NativeLambdaApplication {
 
@@ -22,5 +22,13 @@ public class NativeLambdaApplication {
         logger.info("started app");
     }
 
+    static class NativeRuntimeHints implements RuntimeHintsRegistrar {
 
+        @Override
+        public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+            // Register serialization
+            hints.serialization().registerType(GenerateFunnyNameDto.class);
+            hints.serialization().registerType(FunnyNameRequestDto.class);
+        }
+    }
 }
