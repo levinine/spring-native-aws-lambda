@@ -3,7 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
-      - mvn -DskipTests -Pnative clean package
+      - mvn -Pnative native:compile -DskipTests
   post_build:
     commands:
       - echo Build completed on `date`
